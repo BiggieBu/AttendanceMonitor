@@ -48,10 +48,12 @@ def train_model():
     userlist = os.listdir('static/faces')
     for user in userlist:
         for imgname in os.listdir(f'static/faces/{user}'):
-            img = cv2.imread(f'static/faces/{user}/{imgname}')
+            img_path = f'static/faces/{user}/{imgname}'
+            img = cv2.imread(img_path)
             resized_face = cv2.resize(img, (50, 50))
             faces.append(resized_face.ravel())
             labels.append(user)
+            os.remove(img_path)
     faces = np.array(faces)
     knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(faces,labels)
